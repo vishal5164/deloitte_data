@@ -1,0 +1,1053 @@
+﻿<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CC12603074 — Hearing War Room</title>
+<style>
+  :root {
+    --ink: #23222e;
+    --muted: #6e6b7e;
+    --stamp: #4f468f;
+    --stamp-soft: #edebf6;
+    --paper: #fbfbf9;
+    --line: #e5e3ee;
+    --good: #2e7d4f;
+    --good-soft: #e8f2ec;
+    --warn: #a06a10;
+    --warn-soft: #faf3e3;
+    --stop: #b3372f;
+    --stop-soft: #faeeec;
+    --series-t3: #4a3aa7;
+    --series-t1: #1baf7a;
+  }
+  html { background: var(--paper); scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { color: var(--ink); font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 15.5px; line-height: 1.55; margin: 0; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 28px 20px 80px; }
+  h1, h2, h3 { font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif; line-height: 1.2; text-wrap: balance; }
+  h1 { font-size: 26px; margin: 4px 0 2px; }
+  h2 { font-size: 20px; margin: 0 0 12px; }
+  h3 { font-size: 16.5px; margin: 18px 0 8px; }
+  .eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stamp); margin: 0 0 2px; }
+  .num { font-variant-numeric: tabular-nums; }
+  a { color: var(--stamp); }
+
+  .hearingcard { border: 1px solid var(--line); background: #fff; padding: 16px 18px; margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 14px; }
+  .hearingcard div { min-width: 130px; }
+  .hc-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .hc-value { font-weight: 600; margin-top: 1px; }
+  .zoombtn { display: inline-block; background: var(--stamp); color: #fff; text-decoration: none; font-weight: 600; padding: 9px 16px; margin-top: 10px; }
+  .zoombtn:focus-visible { outline: 3px solid var(--warn); }
+
+  .live { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 14px; }
+  .live > div { background: #fff; padding: 12px 14px; }
+  .live .kn-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .live .kn-value { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .live .kn-note { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  nav.tabs { position: sticky; top: 0; z-index: 20; background: var(--paper); display: flex; gap: 4px; flex-wrap: wrap; padding: 12px 0 10px; border-bottom: 2px solid var(--line); margin-top: 22px; }
+  nav.tabs button { font: inherit; font-size: 13px; font-weight: 600; border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 7px 12px; cursor: pointer; }
+  nav.tabs button[aria-selected="true"] { background: var(--stamp); border-color: var(--stamp); color: #fff; }
+  nav.tabs button:focus-visible { outline: 3px solid var(--warn); }
+  .pane { display: none; padding-top: 24px; }
+  .pane.active { display: block; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  .tablebox { overflow-x: auto; border: 1px solid var(--line); background: #fff; }
+  th { text-align: left; font-size: 11.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 9px 12px; border-bottom: 1px solid var(--line); background: #f6f5f2; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.dt { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--muted); }
+  tr.mark td { background: var(--stop-soft); }
+  .evtag { display: inline-block; font-size: 11px; font-weight: 700; background: var(--stamp-soft); color: var(--stamp); padding: 1px 7px; border-radius: 2px; margin-right: 6px; white-space: nowrap; }
+
+  blockquote.speak { margin: 10px 0 0; padding: 14px 18px; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--stamp); font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif; font-size: 16.5px; line-height: 1.6; }
+  .who { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 16px; }
+  ul.gist { margin: 10px 0 0; padding-left: 0; list-style: none; }
+  ul.gist li { padding: 4px 0 4px 22px; position: relative; font-size: 14.5px; }
+  ul.gist li::before { content: "▸"; position: absolute; left: 4px; color: var(--stamp); font-weight: 700; }
+
+  details.counter { border: 1px solid var(--line); background: #fff; margin-top: 12px; }
+  details.counter summary { cursor: pointer; padding: 13px 16px; font-weight: 700; font-size: 15px; list-style: none; display: flex; gap: 10px; align-items: baseline; }
+  details.counter summary::-webkit-details-marker { display: none; }
+  details.counter summary::before { content: "▸"; color: var(--stamp); }
+  details.counter[open] summary::before { content: "▾"; }
+  details.counter summary:focus-visible { outline: 3px solid var(--warn); }
+  details.counter .cbody { padding: 0 16px 16px; border-top: 1px solid var(--line); }
+  .showthis { margin-top: 12px; padding: 10px 14px; background: var(--good-soft); font-size: 13.5px; }
+  .showthis strong { color: var(--good); }
+
+  .callout { border: 1px solid var(--line); border-left: 3px solid var(--stamp); background: #fff; padding: 13px 16px; margin-top: 14px; }
+  .callout.red { border-left-color: var(--stop); }
+  .callout.amber { border-left-color: var(--warn); }
+  .callout p { margin: 6px 0; }
+  .src { font-size: 12.5px; color: var(--muted); }
+
+  ul.check { list-style: none; padding-left: 0; margin: 10px 0 0; }
+  ul.check li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px solid var(--line); }
+  ul.check li:last-child { border-bottom: none; }
+  ul.check li::before { content: "☐"; position: absolute; left: 2px; top: 6px; font-size: 16px; color: var(--stamp); }
+  ul.nay li::before { content: "✕"; color: var(--stop); font-size: 13px; top: 9px; }
+
+  .option { border: 1px solid var(--line); background: #fff; margin-top: 14px; }
+  .option header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .option .tag { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+  .tag-anchor { background: var(--stamp-soft); color: var(--stamp); }
+  .tag-target { background: var(--good-soft); color: var(--good); }
+  .tag-floor  { background: var(--stop-soft); color: var(--stop); }
+  .option .opt-title { font-weight: 700; font-size: 15.5px; }
+  .option .opt-value { margin-left: auto; color: var(--muted); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .option .body { padding: 4px 16px 14px; }
+  .option ul { margin: 8px 0 0; padding-left: 20px; }
+  .option li { margin-top: 6px; }
+  .option .verdict { margin-top: 12px; padding: 9px 12px; background: #f6f5f2; font-size: 13.5px; }
+
+  .evaluator { border: 1px solid var(--line); background: #fff; padding: 16px 18px; margin-top: 18px; }
+  .evaluator label { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .evaluator label:last-of-type { border-bottom: none; }
+  .evaluator input[type="number"] { font: inherit; font-variant-numeric: tabular-nums; width: 130px; padding: 6px 8px; border: 1px solid var(--line); }
+  .evaluator input:focus-visible, .evaluator input[type="checkbox"]:focus-visible { outline: 3px solid var(--warn); }
+  .evaluator .val { margin-left: auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+  #evVerdict { margin-top: 14px; padding: 14px 16px; font-weight: 700; font-size: 16px; }
+  #evVerdict.accept { background: var(--good-soft); color: var(--good); }
+  #evVerdict.push { background: var(--warn-soft); color: var(--warn); }
+  #evVerdict.walk { background: var(--stop-soft); color: var(--stop); }
+  #evGap { font-weight: 400; font-size: 13.5px; display: block; margin-top: 4px; color: var(--ink); }
+
+  /* chart */
+  .chartcard { border: 1px solid var(--line); background: #fff; padding: 16px 18px; margin-top: 16px; }
+  .legendrow { display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--ink); margin-bottom: 8px; }
+  .legendrow .chip { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: 6px; }
+  .chartbox { overflow-x: auto; }
+  #tooltip { position: fixed; display: none; background: var(--ink); color: #fff; font-size: 12.5px; padding: 6px 10px; pointer-events: none; z-index: 50; max-width: 260px; line-height: 1.4; }
+
+  /* matrix */
+  .matrix td, .matrix th { text-align: center; padding: 6px 6px; font-size: 12.5px; white-space: nowrap; }
+  .matrix th.rowh, .matrix td.rowh { text-align: left; font-weight: 600; font-size: 12.5px; white-space: nowrap; }
+  .matrix td.ns { background: var(--stop-soft); color: var(--stop); font-weight: 700; }
+  .matrix td.w  { background: var(--warn-soft); color: var(--warn); font-weight: 700; }
+  .matrix td.c  { background: var(--good-soft); color: var(--good); font-weight: 700; }
+  .matrix th.dl, .matrix td.dl { border-left: 3px solid var(--stop); }
+  .mlegend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12.5px; margin-top: 10px; color: var(--muted); }
+  .mlegend span b { display: inline-block; width: 18px; text-align: center; margin-right: 4px; }
+
+  .foot { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
+
+  /* interactive checklists */
+  ul.check:not(.nay) li { cursor: pointer; user-select: none; }
+  ul.check:not(.nay) li:hover { background: #f6f5f2; }
+  ul.check li.done { color: var(--muted); text-decoration: line-through; }
+  ul.check li.done::before { content: "☑"; color: var(--good); }
+
+  /* glance strip */
+  #glance { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; background: var(--ink); color: #fff; font-size: 12.5px; padding: 7px 14px; display: flex; gap: 6px 22px; flex-wrap: wrap; align-items: center; font-variant-numeric: tabular-nums; }
+  #glance b { color: #d9d4f2; font-weight: 600; }
+  body { padding-bottom: 44px; }
+
+  /* notes drawer */
+  #notesBtn { position: fixed; right: 16px; bottom: 48px; z-index: 45; background: var(--stamp); color: #fff; border: none; font: inherit; font-weight: 700; font-size: 13.5px; padding: 10px 16px; cursor: pointer; box-shadow: 0 2px 10px rgba(35,34,46,.25); }
+  #notesBtn:focus-visible { outline: 3px solid var(--warn); }
+  #notesPanel { position: fixed; right: 16px; bottom: 92px; z-index: 45; width: min(440px, calc(100vw - 32px)); background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 24px rgba(35,34,46,.2); display: none; flex-direction: column; }
+  #notesPanel.open { display: flex; }
+  #notesPanel .nhead { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); background: #f6f5f2; font-size: 12.5px; color: var(--muted); }
+  #notesPanel .nhead button { font: inherit; font-size: 12px; font-weight: 600; border: 1px solid var(--line); background: #fff; padding: 4px 10px; cursor: pointer; }
+  #notesPanel .nhead button:focus-visible { outline: 2px solid var(--warn); }
+  #notesArea { border: none; resize: vertical; min-height: 220px; padding: 12px; font: inherit; font-size: 14px; line-height: 1.5; outline: none; }
+  #noteStatus { margin-left: auto; font-size: 11px; }
+
+  /* consent terms generator */
+  .termsgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 18px; border: 1px solid var(--line); background: #fff; padding: 16px 18px; }
+  .termsgrid label { font-size: 13px; font-weight: 600; display: flex; flex-direction: column; gap: 4px; }
+  .termsgrid input { font: inherit; font-size: 14px; padding: 7px 9px; border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .termsgrid input:focus-visible { outline: 3px solid var(--warn); }
+  #termsOut { width: 100%; box-sizing: border-box; min-height: 420px; margin-top: 14px; padding: 14px; font-family: Consolas, "Courier New", monospace; font-size: 12.8px; line-height: 1.5; border: 1px solid var(--line); background: #fff; resize: vertical; }
+  .termsbtns { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .termsbtns button { font: inherit; font-size: 13.5px; font-weight: 700; border: none; background: var(--stamp); color: #fff; padding: 9px 16px; cursor: pointer; }
+  .termsbtns button.ghost { background: #fff; color: var(--stamp); border: 1px solid var(--stamp); }
+  .termsbtns button:focus-visible { outline: 3px solid var(--warn); }
+
+  @media print {
+    nav.tabs, #glance, #notesBtn, #notesPanel { display: none !important; }
+    .pane { display: block !important; padding-top: 18px; }
+    .zoombtn { display: none; }
+    body { padding-bottom: 0; }
+  }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">MahaRERA Conciliation · Pune Bench 6 · CC12603074</p>
+  <h1>Hearing War Room — Vishal Kumar &amp; Charu Piriya v. Prasanna Developers</h1>
+  <p style="color:var(--muted);margin:2px 0 0">VTP Sierra Phase 2, Flat T3-2502 · RERA P52100029394 · Paid ₹61,12,351 of ₹64,34,054 (95%)</p>
+
+  <div class="hearingcard">
+    <div><div class="hc-label">Date &amp; time</div><div class="hc-value">Fri, 11 Jul 2026 · 2:30 PM IST</div></div>
+    <div><div class="hc-label">Bench</div><div class="hc-value">Pune Bench 6 (Zoom)</div></div>
+    <div><div class="hc-label">Conciliators</div><div class="hc-value">Mr. Abhay Kele · Mr. Vineet Gokhale</div></div>
+    <div><div class="hc-label">Batched with</div><div class="hc-value">Rohit Surwase · Anuj Loya (v. same builder)</div></div>
+    <div><div class="hc-label">Meeting ID / Passcode</div><div class="hc-value num">850 1418 6168 / 113192</div></div>
+    <div style="flex-basis:100%"><a class="zoombtn" href="https://us06web.zoom.us/j/85014186168?pwd=oZ9FJIrRmdacHw9Qamtp46rBmIncdr.1" target="_blank" rel="noopener">Join Zoom hearing</a></div>
+  </div>
+
+  <div class="live num">
+    <div>
+      <div class="kn-label">Claim as of today</div>
+      <div class="kn-value" id="liveClaim">…</div>
+      <div class="kn-note">interest + rent since 1 Jan 2026</div>
+    </div>
+    <div>
+      <div class="kn-label">Interest head alone</div>
+      <div class="kn-value" id="liveInterest">…</div>
+      <div class="kn-note">₹54,502/mo @ 10.70% p.a.</div>
+    </div>
+    <div>
+      <div class="kn-label">Running cost to VTP</div>
+      <div class="kn-value">₹2,679<span style="font-size:13px;font-weight:400">/day</span></div>
+      <div class="kn-note">₹81,502 every month until OC</div>
+    </div>
+    <div>
+      <div class="kn-label">Accept ≥ / Walk &lt;</div>
+      <div class="kn-value">₹2.5 L / ₹2 L</div>
+      <div class="kn-note">credit + parking + date clause</div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="War room sections">
+    <button role="tab" aria-selected="true" data-pane="script">1 · Script</button>
+    <button role="tab" aria-selected="false" data-pane="counters">2 · Counters</button>
+    <button role="tab" aria-selected="false" data-pane="construction">3 · Construction</button>
+    <button role="tab" aria-selected="false" data-pane="evidence">4 · Evidence</button>
+    <button role="tab" aria-selected="false" data-pane="deal">5 · The deal</button>
+    <button role="tab" aria-selected="false" data-pane="terms">6 · Consent terms</button>
+    <button role="tab" aria-selected="false" data-pane="close">7 · Close &amp; red lines</button>
+  </nav>
+
+  <!-- ============ TAB 1: SCRIPT ============ -->
+  <section class="pane active" id="pane-script">
+    <h2>Before you speak</h2>
+    <ul class="check">
+      <li>Join 2:20 PM; rename “Vishal Kumar — Complainant CC12603074”; <strong>Charu on the call</strong> (both complainants sign)</li>
+      <li>Tonight: ping Rohit Surwase + Anuj Loya (owners’ group). Share two facts: <strong>OC filed with PMC only 14 Apr 2026</strong>; <strong>MahaREAT rejected the identical defense 06.05.2026</strong>. Don’t discuss settlement numbers on record</li>
+      <li>If your case runs second/third: note every claim VTP makes in the other matters — lock them to it</li>
+      <li>This page + Desktop\VTP folder + case bundle open, ready to screen-share</li>
+    </ul>
+
+    <h2 style="margin-top:32px">Opening statement (~90 sec)</h2>
+    <ul class="gist">
+      <li>Who: both allottees · T3-2502 · ₹61.12L paid (95%) · zero default</li>
+      <li>Deadline: 30 Jun 2025 + 6 mo grace = <strong>31 Dec 2025</strong> (Clause 12.1)</li>
+      <li>Three written admissions: Dec-2025 commitment (6 Jun 25) · MCLR+2% rate (20 Apr 26) · OC filed with PMC only 14 Apr 26</li>
+      <li>Claim ≈ ₹5.3L, growing ₹81,502/mo · open to zero-cash structure</li>
+    </ul>
+    <div class="who">Read as written</div>
+    <blockquote class="speak">
+      “Good afternoon. Vishal Kumar, joined by my co-allottee Charu Piriya — Flat 2502, Tower 3, VTP Sierra Phase 2. We have paid ₹61,12,351 — ninety-five percent — with no payment default; the promoter has never issued a default notice or levied delayed-payment charges.
+      <br><br>
+      Under Clause 12.1, possession was due 30th June 2025, with a six-month grace period ending 31st December 2025. Three facts are on record in writing. <strong>First</strong>, on 6th June 2025 the promoter’s CRM committed to possession by December 2025 and to compensation per the agreement and RERA. <strong>Second</strong>, on 20th April 2026 the same CRM confirmed in writing — I quote — ‘the compensation is calculated strictly in accordance with the provisions of RERA. The applicable rate is SBI MCLR plus 2%.’ So the rate is admitted. <strong>Third</strong>, by the promoter’s own email of 14th April 2026, the OC application was submitted to PMC only on that date — three and a half months <em>after</em> the deadline had already expired.
+      <br><br>
+      My accrued claim under Section 18 is approximately ₹5.3 lakh — ₹3.5 lakh interest plus ₹1.85 lakh rent for alternate accommodation — and it grows by ₹81,502 every month. Tower 3 still has no OC and no committed date.
+      <br><br>
+      We are here in good faith. We are open to a structure that involves no cash outflow for the promoter — a credit against our final installment, a parking allotment, and a simple protection clause if the OC is further delayed. But the settlement has to reflect the statutory claim the promoter itself has acknowledged.”
+    </blockquote>
+
+    <h3>Bench asks: “What exactly do you want?”</h3>
+    <ul class="gist">
+      <li>₹3.25L credit vs final installment (= interest head; rent forgone in settlement)</li>
+      <li>First-priority covered EV-ready parking selection, in the terms</li>
+      <li>₹54,502/mo credit if OC misses a fixed written date</li>
+    </ul>
+    <blockquote class="speak">
+      “Three things. One — a credit of ₹3.25 lakh against our final possession installment, which is the interest component alone; we are prepared to forgo the rent claim as part of a settlement. Two — since parking earmarking hasn’t begun, first-priority selection of a covered, non-tandem, EV-provisioned slot, recorded in the consent terms and the supplementary agreement. Three — if the OC is not received by a fixed date, a credit of ₹54,502 per month until it is. If the promoter believes the OC is truly imminent, the third clause costs them nothing.”
+    </blockquote>
+
+    <h3>VTP leads with the PMC migration story</h3>
+    <ul class="gist">
+      <li>Four dates, all theirs: 6 Jan 26 report (T3 unfinished) · 19 Feb 26 “compiling… will apply in 8 days” · 12 Mar 26 “resubmit” · 14 Apr 26 “submitted to PMC”</li>
+      <li>Jurisdiction changed 11 Feb 2026 — six weeks <em>after</em> the deadline lapsed</li>
+      <li>MahaREAT, 6 May 2026: authority dispute over OC = no defense; date “sacrosanct”</li>
+    </ul>
+    <blockquote class="speak">
+      “Sir, may I respond with four dates, all from the promoter’s own documents? Their progress report of 6th January 2026 shows Tower 3 flooring and doors still in progress <em>after</em> the deadline expired. Their email of 19th February admits they were still <em>compiling and preparing</em> the OC documentation, promising to apply ‘within 8 days.’ Their email of 12th March says they were still coordinating to <em>resubmit</em>. Their email of 14th April says the application was submitted to PMC on that date. The jurisdiction changed on 11th February 2026 — six weeks <em>after</em> the possession deadline had already lapsed, on a building their own reports show was not finished. The Appellate Tribunal rejected exactly this defense — an authority dispute over who issues the OC — on 6th May this year, holding the possession date in the agreement is sacrosanct.”
+    </blockquote>
+  </section>
+
+  <!-- ============ TAB 2: COUNTERS ============ -->
+  <section class="pane" id="pane-counters">
+    <h2>Live counters — click the defense they raise</h2>
+
+    <details class="counter" open>
+      <summary>“The PMRDA→PMC migration delayed our OC — beyond our control”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Breach completed 31 Dec 2025; transition happened 11 Feb 2026 — can’t reach backwards</li>
+          <li>Their own 19 Feb email: documents still being “compiled and prepared” — 7 weeks past deadline</li>
+          <li>Three broken timelines in writing: “8 days” (19 Feb) → “end of March” (12 Mar) → filed 14 Apr</li>
+          <li>No valid earlier application possible: flooring billed complete only 17 Feb 2026; a genuine pre-deadline PMRDA filing would have been decided/deemed in 21 days, before the transition</li>
+          <li>MahaREAT rejected the identical defense twice (2024 + 06.05.2026)</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“The transition is real — but it happened on 11th February 2026, six weeks after our deadline expired on 31st December 2025. A cause that arises after the breach cannot excuse the breach. And the promoter’s own emails tell the story: on 19th February they wrote they were still <em>compiling and preparing</em> the OC documentation and would apply ‘within the next 8 days.’ On 12th March, still ‘coordinating to resubmit.’ The application actually reached PMC on 14th April — their own email. Meanwhile their own ledger billed us the ‘flooring completion’ milestone on 17th February 2026. So what valid OC application could have existed before the deadline? None. PMC then moved at normal speed — three inspections by June, OC for Towers 1 and 2 by July. The delay is construction delay; the migration is a footnote.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>A3</strong> (19 Feb email — “compiling… 8 days”), <strong>A3b</strong> (12 Mar), <strong>A4</strong> (14 Apr), <strong>Construction tab</strong> (matrix + chart), <strong>D2</strong> (ledger 17 Feb 2026), <strong>F3</strong> (MahaREAT rulings), <strong>E1–E3</strong> (news timeline).</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“Clause 12.1 lists OC delay as force majeure — the contract excuses us”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>RERA s.6 force majeure = war/flood/fire/cyclone/earthquake — not approvals</li>
+          <li>NOC/authority delays rejected: Dattani (2024), Kulkarni (Pune, 2026)</li>
+          <li>s.18 right “unconditional absolute” (SC Newtech) · one-sided clauses not binding (SC Pioneer Urban)</li>
+          <li>Clause (ix) needs “complied with all requirements” — unfinished tower complies with nothing</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“Force majeure under Section 6 of RERA means war, flood, drought, fire, cyclone, earthquake — natural calamity. MahaRERA held in May 2024 that delays in statutory NOCs are not force majeure, and in June this year, in a Pune matter, that authority stop-work and clearance delays are ‘ordinary commercial risks.’ The Supreme Court in Newtech held the allottee’s Section 18 right is an unconditional absolute right regardless of unforeseen events, and in Pioneer Urban that one-sided builder clauses are not binding on the buyer. Clause 12.1(ix) itself applies only where the promoter has ‘complied with all requirements’ — an unfinished tower complies with nothing.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>F1</strong>, <strong>F2</strong>, <strong>F5</strong>, <strong>F6</strong>, <strong>C2</strong>.</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“The OC is just days away — settle later / wait for possession”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Four promises, four misses: “8 days” (19 Feb) → “end of March” (12 Mar) → “15 days” (20 Apr) → it’s July</li>
+          <li>8 Jun: third inspection passed for all 3 towers — T1/T2 got OC, T3 didn’t. Why? Demand PMC correspondence</li>
+          <li>If truly imminent, a fixed-date ₹/month clause costs them nothing</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“On 19th February you wrote you’d apply ‘within the next 8 days.’ On 12th March you wrote ‘end of March 2026.’ On 20th April you wrote ‘approximately 15 days.’ It is now July, and Towers 1 and 2 have OC while Tower 3 does not — despite your 8th June email saying the third inspection positively concluded for all three towers. So: what exactly is pending for Tower 3, and can you produce the PMC correspondence? If the OC truly is imminent, then agreeing today that a credit of ₹54,502 per month runs from a fixed date costs you nothing. Declining that clause tells the bench you don’t believe your own timeline.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>A3</strong>, <strong>A3b</strong>, <strong>A5</strong>, <strong>A6</strong>.</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“You defaulted on payments — Clause 10 doesn’t apply”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>95% paid; 2–6 day bank-disbursement lags only</li>
+          <li>No default notice ever; no delayed-payment charge ever (their own ledger)</li>
+          <li>They admitted the compensation rate on 20 Apr 2026 knowing the payment history</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“Ninety-five percent paid, every milestone honoured. A handful of bank-disbursement payments landed two to six days after the due date; the promoter never issued a default notice and never levied delayed-payment charges — the statement of account the promoter itself issued shows that. And on 20th April 2026 — with full knowledge of our payment history — your CRM confirmed compensation at SBI MCLR plus 2%. You cannot admit the liability in April and discover a ‘default’ in July.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>D2</strong>, <strong>A5</strong>.</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“Rent on top of interest is double compensation”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Round-2 concession only — never free</li>
+          <li>Trade: drop rent (₹1.85L) ⇄ full interest credit (₹3.25L) + parking + date clause</li>
+          <li>If they want rent dropped AND a discounted credit = two concessions for one → refuse</li>
+        </ul>
+        <div class="who">Say (round 2 only)</div>
+        <blockquote class="speak">“The rent is real money paid — agreement and bank transfers are on record. But in the spirit of settlement: if the promoter agrees to the full interest-side credit of ₹3.25 lakh and the parking and date-protection terms, we will forgo the rent head entirely. That is a ₹1.85 lakh concession, today, on the table.”</blockquote>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“MahaRERA itself extended our registration to Dec 2026”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Extension cited a Chairman’s order of <strong>23 Jan 2026</strong> — before the PMC notification existed</li>
+          <li>Kulkarni (Pune, 13.06.2026): extensions are “administrative,” don’t alter the AFS date</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“The registry shows the extension was applied for citing a Chairman’s order dated 23rd January 2026 — before the PMC notification even issued, so the extension itself wasn’t premised on the migration. And MahaRERA held last month in the Ravet matter that registration extensions are administrative in nature and do not alter the possession date committed in a registered agreement for sale. The extension protects the registration; it does not erase Section 18 liability.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>D1</strong>, <strong>F5</strong>.</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“Your own June 2025 email says possession was due June 2024” (typo attack)</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Obvious typo in a June-2025 email; registered AFS controls</li>
+          <li>Notice of 29 Mar 2026 + complaint quote the date correctly — move on fast</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“An obvious typographical error in an email sent in June 2025 — the same email correctly demands the December 2025 timeline. The registered Agreement for Sale states 30th June 2025 plus six months’ grace in Clause 12.1, and our formal notice of 29th March 2026 and the complaint both quote it correctly. Nothing turns on it.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>C1</strong>, then move on.</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“We’ll compensate as per the agreement” (vague, no number)</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Clause 10 = interest per RERA rule; CRM admitted SBI MCLR+2% in writing</li>
+          <li>₹61,12,351 × 10.70% ÷ 12 = ₹54,502/mo from 1 Jan 2026 — nothing to interpret</li>
+          <li>Ask the bench to record the number today</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“The agreement’s Clause 10 says interest per the RERA rule — which your CRM confirmed in writing is SBI MCLR plus 2%. On ₹61,12,351 that is ₹54,502 per month from 1st January 2026. There is nothing left to interpret — only to compute. May we record the number in the terms today?”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>C3</strong>, <strong>A5</strong>, <strong>D3</strong>.</div>
+      </div>
+    </details>
+
+    <details class="counter">
+      <summary>“Take fit-out possession now, settle compensation later”</summary>
+      <div class="cbody">
+        <ul class="gist">
+          <li>Occupation before OC isn’t lawful possession</li>
+          <li>Interest runs until possession <em>with a valid OC</em> (Kulkarni, 13.06.2026)</li>
+          <li>Deferring only grows the number ₹81,502/mo</li>
+        </ul>
+        <div class="who">Say</div>
+        <blockquote class="speak">“Occupation before OC is not lawful possession, and Section 18 interest runs until possession with a valid Occupancy Certificate — MahaRERA’s June 2026 Pune order says exactly that. We will take possession the day the OC exists. Meanwhile the compensation question is ripe today, and deferring it only grows the number at ₹81,502 a month.”</blockquote>
+        <div class="showthis"><strong>Show:</strong> <strong>F5</strong>.</div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ TAB 3: CONSTRUCTION ============ -->
+  <section class="pane" id="pane-construction">
+    <h2>Construction over time — from VTP’s own 11 monthly reports</h2>
+    <ul class="gist">
+      <li>T3 flooring crawled <strong>11F → 26F in ~10 months</strong> (~1.5 floors/month), finishing only <strong>Mar 2026</strong> — 2+ months past grace</li>
+      <li>T1 (identical tower) had the same trades <strong>complete before the window even starts</strong></li>
+      <li>No acceleration after the 6 Jun 2025 written “expediting construction” promise</li>
+      <li>Zero mentions of OC, target dates, or delay reasons in any report</li>
+      <li>Even on <strong>30 Apr 2026</strong>: doors 23–26F, internal + external painting, clubhouse/amenities — all still WIP</li>
+    </ul>
+
+    <div class="chartcard">
+      <h3 style="margin-top:0">Tower 3 flooring progress vs. the two deadlines</h3>
+      <div class="legendrow" aria-hidden="false">
+        <span><span class="chip" style="background:var(--series-t3)"></span>Tower 3 — highest floor with flooring done/WIP</span>
+        <span><span class="chip" style="background:var(--series-t1)"></span>Tower 1 — flooring complete throughout (26F)</span>
+        <span><span class="chip" style="background:var(--stop); height:4px; width:2px; border-left:2px dashed var(--stop); background:none"></span>Deadlines</span>
+      </div>
+      <div class="chartbox">
+        <svg id="floorchart" viewBox="0 0 720 330" width="100%" style="min-width:640px" role="img" aria-label="Line chart: Tower 3 flooring reached floor 11 of 26 in April 2025, floor 24 by November 2025, and completed floor 26 only on 5 March 2026 — past both the 30 June 2025 contractual date and the 31 December 2025 grace deadline. Tower 1 was complete the whole time.">
+          <!-- grid -->
+          <line x1="50" y1="270" x2="690" y2="270" stroke="#c9c7d4" stroke-width="1"/>
+          <line x1="50" y1="145" x2="690" y2="145" stroke="#eceaf3" stroke-width="1"/>
+          <line x1="50" y1="20"  x2="690" y2="20"  stroke="#eceaf3" stroke-width="1"/>
+          <text x="44" y="274" text-anchor="end" font-size="11" fill="#6e6b7e">0</text>
+          <text x="44" y="149" text-anchor="end" font-size="11" fill="#6e6b7e">13</text>
+          <text x="44" y="24"  text-anchor="end" font-size="11" fill="#6e6b7e">26F</text>
+          <!-- x labels -->
+          <text x="164" y="290" text-anchor="middle" font-size="11" fill="#6e6b7e">Jul 25</text>
+          <text x="318" y="290" text-anchor="middle" font-size="11" fill="#6e6b7e">Sep 25</text>
+          <text x="485" y="290" text-anchor="middle" font-size="11" fill="#6e6b7e">Jan 26</text>
+          <text x="592" y="290" text-anchor="middle" font-size="11" fill="#6e6b7e">Mar 26</text>
+          <text x="690" y="290" text-anchor="middle" font-size="11" fill="#6e6b7e">Apr 26</text>
+          <!-- deadlines -->
+          <line x1="157" y1="12" x2="157" y2="270" stroke="#b3372f" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="161" y="308" font-size="11" fill="#b3372f" font-weight="600">30 Jun 2025 — contractual</text>
+          <line x1="480" y1="12" x2="480" y2="270" stroke="#b3372f" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="484" y="308" font-size="11" fill="#b3372f" font-weight="600">31 Dec 2025 — grace expires</text>
+          <!-- T1 reference -->
+          <line x1="50" y1="20" x2="690" y2="20" stroke="#1baf7a" stroke-width="2"/>
+          <text x="54" y="38" font-size="11.5" fill="#23222e" font-weight="600">Tower 1 · complete throughout</text>
+          <!-- T3 series -->
+          <polyline fill="none" stroke="#4a3aa7" stroke-width="2.5"
+            points="50,164 164,140 218,135 318,102 371,54 425,34 485,25 539,20 592,20 636,20 690,20"/>
+          <text x="240" y="126" font-size="11.5" fill="#23222e" font-weight="600">Tower 3 · flooring floor reached</text>
+          <!-- completion marker -->
+          <circle cx="592" cy="20" r="7" fill="#4a3aa7" stroke="#fff" stroke-width="2"/>
+          <text x="596" y="52" font-size="11" fill="#23222e">flooring completed<tspan x="596" dy="13">only 5 Mar 2026</tspan></text>
+          <!-- data points (hover targets added by JS) -->
+        </svg>
+      </div>
+      <details style="margin-top:10px">
+        <summary style="cursor:pointer;font-size:13px;color:var(--muted)">Data table (chart values + source report per point)</summary>
+        <div class="tablebox" style="margin-top:8px"><table id="floortable">
+          <tr><th>As on</th><th>T3 flooring at</th><th>Source report (Desktop\VTP)</th></tr>
+        </table></div>
+      </details>
+    </div>
+
+    <div class="chartcard">
+      <h3 style="margin-top:0">Trade-by-trade status matrix — Tower 3 across all 11 reports</h3>
+      <p class="src" style="margin:0 0 10px">Hover any column header for the exact “as on” date and PDF filename. Red border = a deadline passed before that column.</p>
+      <div class="tablebox">
+        <table class="matrix" id="matrixtable"></table>
+      </div>
+      <div class="mlegend">
+        <span><b style="background:var(--stop-soft);color:var(--stop)">–</b> not started / not reported</span>
+        <span><b style="background:var(--warn-soft);color:var(--warn)">W</b> work in progress</span>
+        <span><b style="background:var(--good-soft);color:var(--good)">✓</b> completed</span>
+      </div>
+      <ul class="gist" style="margin-top:14px">
+        <li>Read the grace-deadline border: <strong>7 of 12 rows still amber or red in Jan 2026</strong></li>
+        <li>Clubhouse/amenities row never turns green — common areas are an OC prerequisite</li>
+        <li>Say: “These are the promoter’s own CRM reports, sent to me monthly. Not one mentions an OC application or a delay reason.”</li>
+      </ul>
+    </div>
+
+    <p class="src"><strong>Citations — the 11 reports (Desktop\VTP folder, ready to screen-share):</strong> CRM_05-05-2025.pdf (as on 30.04.25) · Progress report 05 July 2025.pdf (04.07.25) · 05th August 2025.pdf (04.08.25) · CRM_06-10-2025 (3).pdf (30.09.25) · CRM_05-11-2025 (2).pdf (30.10.25) · CRM_05-12-2025.pdf (30.11.25) · 06th Jan 2026.pdf (03.01.26) · CRM_05-02-2026.pdf (03.02.26) · CRM_05-03-2026 (1) (1).pdf (05.03.26) · CRM_05-04-2026.pdf (30.03.26) · CRM_05-05-2026 Read-Only.pdf (30.04.26)</p>
+  </section>
+
+  <!-- ============ TAB 4: EVIDENCE ============ -->
+  <section class="pane" id="pane-evidence">
+    <h2>Evidence locker — every claim, its proof</h2>
+    <p class="src">Tags (A1, C1, D2…) match the “Show” boxes in Counters. Your documents: <strong>Desktop\VTP</strong> + case bundle. External sources: hyperlinked.</p>
+
+    <h3>A · The promoter’s written admissions (their emails, verbatim)</h3>
+    <div class="tablebox"><table>
+      <tr><th style="width:110px">Tag / date</th><th>What it says (exact quotes) + file</th></tr>
+      <tr><td class="dt"><span class="evtag">A1</span>6 Jun 2025</td><td>“We acknowledge and understand your concerns regarding the progress of T3… <strong>foresee the units being ready for possession by December 2025</strong>.” · “In the event of any delays, <strong>compensation will be processed according to the terms outlined in the agreement and in alignment with RERA guidelines</strong>, if applicable.” <span class="src">— Balaji Ekande · file: “Gmail - Escalation Matrix.pdf”</span></td></tr>
+      <tr><td class="dt"><span class="evtag">A2</span>5 Jun 2025</td><td>Your grievance recording Ankit Teli’s verbal admission: “a further delay of three months, with ‘soft possession’ in September and final possession in December.” Never contradicted in writing. <span class="src">— same file</span></td></tr>
+      <tr class="mark"><td class="dt"><span class="evtag">A3</span>19 Feb 2026</td><td>“The earlier submissions addressed to PMRDA are <strong>no longer valid</strong> due to this regulatory change, and a fresh set of documents is required to be submitted to PMC.” · “We are currently in the process of <strong>compiling and preparing the revised documentation</strong> and will be <strong>applying for the OC within the next 8 days</strong>.” · “this transition from PMRDA to PMC is an external regulatory change and is beyond our control.” <span class="src">— Balaji Ekande, generic “Dear Customer” circular · <strong>Read together:</strong> 7 weeks past the deadline, documents still being “compiled”; the “8 days” promise (→ ~27 Feb) was broken — actual PMC filing 14 Apr. Any “earlier PMRDA submissions” are unspecified and, for T3, impossible as a valid OC application: flooring was billed complete only 17 Feb 2026 (D2), and a valid pre-deadline application to PMRDA would have been decided or deemed within UDCPR’s 21 days long before the 11 Feb transition (E4)</span></td></tr>
+      <tr class="mark"><td class="dt"><span class="evtag">A3b</span>12 Mar 2026</td><td>“As of Feb 11, the Sus area has transitioned from PMRDA to PMC jurisdiction, requiring a mandatory handover of all official records. We are currently coordinating with PMC officials to <strong>resubmit our OC application</strong>… <strong>aiming to secure the OC by the end of March 2026</strong>.” <span class="src">— file: “Gmail - OC application status.pdf” · second broken timeline</span></td></tr>
+      <tr class="mark"><td class="dt"><span class="evtag">A4</span>14 Apr 2026</td><td>“The Occupancy Certificate (OC) application <strong>has been successfully submitted to PMC</strong>.” · “Possession will be initiated immediately upon receipt.” <span class="src">— file: “Gmail - Formal Demand for Compensation….pdf” — fixes the PMC filing at 3.5 months post-deadline</span></td></tr>
+      <tr class="mark"><td class="dt"><span class="evtag">A5</span>20 Apr 2026</td><td>“The (OC) application is currently under process, and the approval is expected to take <strong>approximately 15 days</strong>.” · “<strong>The compensation is calculated strictly in accordance with the provisions of RERA. The applicable rate is SBI MCLR + 2%.</strong>” <span class="src">— same file · the rate admission — hand to bench first</span></td></tr>
+      <tr><td class="dt"><span class="evtag">A6</span>8 Jun 2026</td><td>“Officials conducted their <strong>third inspection visit for VTP SIERRA Tower 1, Tower 2 &amp; Tower 3</strong>… <strong>positively concluded</strong>.” Yet only T1/T2 got OC. <span class="src">— file: “Gmail - Update on Occupancy Certificate Inspection.pdf”</span></td></tr>
+      <tr><td class="dt"><span class="evtag">A7</span>26 Mar 2024</td><td>Pre-signing, VTP’s CRM: “interest will be paid to buyers as per the interest rate specified in the rule” (Clause 10, p.19); amenities “31-12-2025.” <span class="src">— file: “Gmail - VTP Sierra Phase II – Draft Agreement….pdf”</span></td></tr>
+    </table></div>
+
+    <h3>B · Construction reports → see the <a href="#" onclick="document.querySelector('[data-pane=construction]').click(); return false;">Construction tab</a> (chart + trade matrix, all 11 reports cited)</h3>
+
+    <h3>C · The registered agreement (case bundle, page-flagged)</h3>
+    <div class="tablebox"><table>
+      <tr><th style="width:70px">Tag</th><th>Clause</th></tr>
+      <tr><td><span class="evtag">C1</span></td><td><strong>Clause 12.1 (p.20)</strong> — possession “on or before 30/06/2025, subject to grace period of 6 months” → deadline 31 Dec 2025</td></tr>
+      <tr><td><span class="evtag">C2</span></td><td><strong>Clause 12.1 force majeure (ix)</strong> — OC-delay carve-out applies only if promoter “complied with all requirements”; overridden by s.18 regardless (see F)</td></tr>
+      <tr><td><span class="evtag">C3</span></td><td><strong>Clause 10 (p.19)</strong> — interest “as specified in the Rule” (Maharashtra Rule 18: SBI highest MCLR + 2%) per month of delay, on amounts paid excl. taxes; condition: no payment default</td></tr>
+      <tr><td><span class="evtag">C4</span></td><td><strong>Clauses 18 &amp; 35</strong> — parking = promoter-discretion earmarking of restricted common area; <strong>19.18</strong> — registered supplementary agreement at possession (vehicle for parking terms)</td></tr>
+    </table></div>
+
+    <h3>D · Official records</h3>
+    <div class="tablebox"><table>
+      <tr><th style="width:70px">Tag</th><th>Record</th></tr>
+      <tr><td><span class="evtag">D1</span></td><td><strong>MahaRERA registry, P52100029394</strong> — registered 29 May 2021 · original completion <strong>31 Dec 2025</strong> · extended to <strong>31 Dec 2026</strong> (appl. EA26122519031 citing “order of the Hon’ble Chairman (MahaRERA) Dated 23/01/2026”) · 354/361 sold. <span class="src"><a href="https://maharera.maharashtra.gov.in/projects-search-result?project_name=P52100029394" target="_blank" rel="noopener">portal search</a> · <a href="https://maharerait.maharashtra.gov.in/public/project/view/29488" target="_blank" rel="noopener">project page (ID 29488)</a></span></td></tr>
+      <tr><td><span class="evtag">D2</span></td><td><strong>VTP statement of account</strong> (20 Jun 2021 – 23 May 2026, case bundle) — ₹61,12,351 paid · “Upon completion of flooring” milestone <strong>billed 17 Feb 2026</strong> · no delayed-payment charge ever levied</td></tr>
+      <tr><td><span class="evtag">D3</span></td><td><strong>SBI MCLR (official)</strong> — 1-yr 8.70% at every reset 15 Jan–15 Jun 2026 → 10.70% is conservative (3-yr “highest” = 8.80% → 10.80%). <span class="src"><a href="https://sbi.bank.in/web/interest-rates/interest-rates/mclr" target="_blank" rel="noopener">current</a> · <a href="https://sbi.bank.in/web/interest-rates/interest-rates/mclr-historical-data" target="_blank" rel="noopener">historical</a></span></td></tr>
+    </table></div>
+
+    <h3>E · The PMRDA→PMC public record (their excuse, bounded)</h3>
+    <div class="tablebox"><table>
+      <tr><th style="width:70px">Tag</th><th>Fact + source</th></tr>
+      <tr><td><span class="evtag">E1</span></td><td>Sus merged into PMC <strong>30 Jun 2021</strong>; <strong>14 Jul 2021</strong> notification kept <strong>PMRDA as Special Planning Authority</strong>. <span class="src"><a href="https://www.punekarnews.in/pune-23-villages-merge-with-pune-municipal-corporation-now-pmc-becomes-largest-municipality-in-maharashtra/" target="_blank" rel="noopener">Punekar News</a> · <a href="https://www.mypunepulse.com/pune-pmrda-scraps-draft-development-plan-dispute-over-23-villages-remains-unresolved/" target="_blank" rel="noopener">Pune Pulse</a></span></td></tr>
+      <tr><td><span class="evtag">E2</span></td><td>CM ordered transfer <strong>11 Dec 2025</strong>; UDD notification <strong>11 Feb 2026</strong> made PMC sole planning authority. <span class="src"><a href="https://www.punekarnews.in/pune-cm-fadnavis-orders-pmc-to-take-over-building-permissions-in-23-merged-villages/" target="_blank" rel="noopener">Punekar News</a> · <a href="https://www.mypunepulse.com/pune-pmc-takes-over-planning-authority-role-for-23-merged-villages/" target="_blank" rel="noopener">Pune Pulse</a></span></td></tr>
+      <tr><td><span class="evtag">E3</span></td><td>Handover stalled ~2 months; state directed pending proposals decided in 60 days (reported <strong>6 Apr 2026</strong>). <span class="src"><a href="https://www.punekarnews.in/pune-merged-villages-govt-directs-authorities-to-clear-building-permissions-in-60-days/" target="_blank" rel="noopener">Punekar News</a></span></td></tr>
+      <tr><td><span class="evtag">E4</span></td><td>Honest concessions if asked, in pointers: <strong>(a)</strong> transition real, files stalled Feb–May 2026 · <strong>(b)</strong> can’t reach a breach completed 31 Dec 2025 · <strong>(c)</strong> UDCPR Reg. 2.10: OC must be granted/refused in <strong>21 days</strong> of completion certificate, deemed-OC remedy after — never invoked by VTP</td></tr>
+    </table></div>
+
+    <h3>F · Authorities — full citations, facts, holdings, and how to say them aloud</h3>
+    <p class="src">Reliability tiers: <strong>[Full judgment]</strong> = complete text linked, quote freely · <strong>[Order PDF]</strong> = official tribunal PDF · <strong>[Press-reported]</strong> = holding verified from legal press, case number not public — cite by date and forum, offer to furnish the report. If asked “produce the judgment,” say: “We can furnish the full text / report with the consent-terms filing.”</p>
+
+    <div class="tablebox"><table>
+      <tr><th style="width:70px">Tag</th><th>Authority</th></tr>
+
+      <tr><td><span class="evtag">F1</span></td><td>
+        <strong>M/s Newtech Promoters &amp; Developers Pvt. Ltd. v. State of U.P. &amp; Ors.</strong><br>
+        Supreme Court · Civil Appeal Nos. 6745–6749 of 2021 · decided 11.11.2021 · (2021) SCC OnLine SC 1044 · bench: U.U. Lalit, Ajay Rastogi &amp; Aniruddha Bose JJ.<br>
+        <em>Facts:</em> batch of UP-RERA refund matters; builders pleaded delays beyond their control.<br>
+        <em>Held:</em> Section 18 gives the allottee an <strong>“unconditional absolute right”</strong> to refund/interest if possession isn’t delivered per the agreement, <strong>“regardless of unforeseen events or stay orders of the Court/Tribunal”</strong> not attributable to the allottee.<br>
+        <span class="src"><strong>[Full judgment]</strong> <a href="https://indiankanoon.org/doc/149094324/" target="_blank" rel="noopener">Indian Kanoon</a></span><br>
+        <em>Say it as:</em> “Newtech Promoters versus State of U.P., Supreme Court, Civil Appeals 6745 to 6749 of 2021, decided 11th November 2021.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F2</span></td><td>
+        <strong>Pioneer Urban Land &amp; Infrastructure Ltd. v. Govindan Raghavan</strong><br>
+        Supreme Court · Civil Appeal No. 12238 of 2018 (with connected CA 1677 of 2019, <em>Pioneer Urban v. Geetu Gidwani Verma</em>) · decided 02.04.2019 · <strong>(2019) 5 SCC 725</strong> · bench: U.U. Lalit &amp; Indu Malhotra JJ. (Malhotra J. authoring).<br>
+        <em>Facts:</em> Gurugram flat; builder missed possession and had no OC; buyer refused possession and sought refund; builder relied on one-sided agreement clauses.<br>
+        <em>Held:</em> one-sided clauses in a builder’s standard-form agreement are an <strong>unfair trade practice and do not bind the buyer</strong>; refund of ₹4,48,43,026 with 10.7% interest affirmed.<br>
+        <span class="src"><strong>[Full judgment]</strong> <a href="https://indiankanoon.org/doc/154279163/" target="_blank" rel="noopener">Indian Kanoon</a> · <a href="https://api.sci.gov.in/supremecourt/2018/46308/46308_2018_Judgement_02-Apr-2019.pdf" target="_blank" rel="noopener">official SC PDF</a></span><br>
+        <em>Say it as:</em> “Pioneer Urban versus Govindan Raghavan, 2019 volume 5 SCC page 725 — one-sided builder clauses are not binding.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F3</span></td><td>
+        <strong>The MHADA–MCGM occupancy-dispute rulings (Veena group matters)</strong> — <em>your closest analogue; treat as one line of authority with two reported rulings:</em><br>
+        <strong>(a) MahaREAT, reported 05.04.2024</strong> (Veena “Serenity” project) · bench: Justice Shriram R. Jagtap (Judicial Member) &amp; Dr. K. Shivaji (Technical Member) · upheld MahaRERA order dated 26.10.2018.<br>
+        <em>Facts:</em> buyer retained the flat (same posture as yours); builder pleaded that a MHADA–MCGM dispute over which body approves the OC delayed it.<br>
+        <em>Held:</em> plea dismissed; buyer entitled to <strong>interest for the delay period from 01.08.2018 until possession</strong>.<br>
+        <span class="src"><strong>[Press-reported]</strong> <a href="https://thelawsuits.in/mahareat-grants-homebuyer-interest-for-delayed-possession-dismisses-builders-contention-of-delayed-approval-of-the-occupation-certificate-from-authorities/" target="_blank" rel="noopener">The Law Suits (05.04.2024)</a></span><br>
+        <strong>(b) MahaREAT, order dated 06.05.2026</strong> (reported 27.06.2026).<br>
+        <em>Facts:</em> Bandra East flat 1403, price ₹1.5875 cr, agreement 22.03.2015, possession due 22.09.2017; part-OC only Oct 2018, full OC 05.04.2021; builder blamed the MHADA–MCGM authority dispute.<br>
+        <em>Held:</em> possession date in the agreement is <strong>“sacrosanct”</strong>; approval delays <strong>“cannot be construed as force majeure”</strong> (Section 6 covers war, flood, drought, fire, cyclone, earthquake, natural calamity only); the due date had <strong>expired before the authority dispute even arose</strong>; refund ₹1,43,13,215 with interest at SBI highest MCLR + 2% from the dates of payment.<br>
+        <span class="src"><strong>[Press-reported]</strong> <a href="https://www.webnewswire.com/2026/06/27/mahareat-mhada-mcgm-row-cant-justify-flat-delay/" target="_blank" rel="noopener">Webnewswire (27.06.2026)</a> · likely the same matter digested as <em>Narendra Ramchand Ochani v. Veena Realcon Pvt. Ltd.</em>, <a href="https://ibclaw.in/narendra-ramchand-ochani-and-anr-vs-veena-realcon-pvt-ltd-maharashtra-reat/" target="_blank" rel="noopener">IBC Laws (29.06.2026)</a> — <strong>do not cite (b) and Ochani as two separate precedents</strong></span><br>
+        <em>Say it as:</em> “The Appellate Tribunal has rejected this exact defense twice in the Veena group matters — a 2024 ruling granting interest where the buyer kept the flat, and an order of 6th May 2026 granting a ₹1.43 crore refund — both holding that a dispute between authorities over who issues the OC is no answer to Section 18.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F4</span></td><td>
+        <strong>CCI Projects Pvt. Ltd. (“Wintergreen”, Rivali Park, Borivali) batch appeals</strong><br>
+        MahaREAT · Appeal Nos. AT006000000053079 to 53179 of 2021 (40 appeals) · common judgment dated 27.04.2026.<br>
+        <em>Facts:</em> promoter appealed 40 MahaRERA interest awards pleading DCR changes, the Indiabulls/NBFC liquidity crisis, sand scarcity, COVID-19, buyer waivers and arbitration clauses.<br>
+        <em>Held:</em> the allottee’s right to delay interest is <strong>“a statutory and enforceable right”</strong> and <strong>“indefeasible”</strong>; possession dates are binding commitments a promoter cannot unilaterally extend; RERA s.89 overrides the Contract Act; all 40 appeals dismissed with ₹5,000 costs per allottee.<br>
+        <span class="src"><strong>[Press-reported]</strong> <a href="https://www.mondaq.com/india/real-estate/1792202/mahareat-upholds-homebuyers-right-to-interest-rejects-waiver-and-arbitration-defences" target="_blank" rel="noopener">Mondaq analysis</a></span><br>
+        <em>Say it as:</em> “The CCI Projects batch — Appeals AT006-53079 to 53179 of 2021, judgment 27th April 2026 — forty appeals dismissed; the right to delay interest is indefeasible.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F5</span></td><td>
+        <strong>Omkar Milind Kulkarni v. M/s Urban Space Creators</strong> (Urban Skyline Phase II, Ravet, Pune)<br>
+        MahaRERA · order dated 13.06.2026.<br>
+        <em>Facts:</em> Pune builder pleaded delayed environmental clearance, a PCMC stop-work order, strikes and labour shortage.<br>
+        <em>Held:</em> such events are <strong>“ordinary commercial risks”</strong>; registration extensions are <strong>“administrative in nature and do not alter the possession date committed in a registered Agreement for Sale”</strong>; interest at SBI MCLR+2% from 01.05.2025 <strong>until possession with a valid Occupancy Certificate</strong>.<br>
+        <span class="src"><strong>[Press-reported]</strong> <a href="https://www.punekarnews.in/builders-delay-comes-at-a-cost-maharera-orders-interest-payment-to-homebuyer/" target="_blank" rel="noopener">Punekar News (13.06.2026)</a></span><br>
+        <em>Say it as:</em> “MahaRERA’s order of 13th June 2026 in the Urban Skyline, Ravet matter — last month, in Pune.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F6</span></td><td>
+        <strong>Anil Kumar Dattani v. Real Gem Buildtech Pvt. Ltd. &amp; Ors.</strong> (Rustomjee Crown Phase I, Prabhadevi)<br>
+        MahaRERA · Complaint No. CC006000000292852 · order dated 13.05.2024.<br>
+        <em>Held:</em> “the delay cited… such as delay in obtaining CFO NOC due to change in fire norms and the delay in obtaining NOC from MPCB <strong>do not fall within the force majeure factors</strong>”; delay interest awarded (from 01.01.2023, payable on the promoter obtaining full OC).<br>
+        <span class="src"><strong>[Press-reported]</strong> <a href="https://www.legalserviceindia.com/legal/article-17581-maha-rera-delay-in-obtaining-nocs-including-fire-noc-not-covered-by-force-majeure.html" target="_blank" rel="noopener">Legal Service India</a></span><br>
+        <em>Say it as:</em> “Dattani versus Real Gem Buildtech, MahaRERA complaint CC-006-000000-292852, order 13th May 2024 — authority NOC delays are not force majeure.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F7</span></td><td>
+        <strong>Kirankumar Jathar &amp; Anr. v. Bharat Infrastructure &amp; Engineering Pvt. Ltd.</strong><br>
+        MahaREAT · judgment dated 31.07.2024.<br>
+        <em>Held:</em> Section 18 rights are <strong>“unconditional and absolute, regardless of unforeseen events including the factors beyond the control of the Promoters”</strong>; the promoter, as “repository of information,” bears responsibility for project delays.<br>
+        <span class="src"><strong>[Press-reported digest]</strong> <a href="https://ibclaw.in/mr-kirankumar-jathar-and-anr-vs-bharat-infrastructure-and-engineering-pvt-ltd-maharashtra-reat/" target="_blank" rel="noopener">IBC Laws</a></span><br>
+        <em>Say it as:</em> “Kirankumar Jathar versus Bharat Infrastructure, Appellate Tribunal, 31st July 2024.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F8</span></td><td>
+        <strong>MahaREAT ruling of 16.10.2024 — unconditional right to interest</strong><br>
+        MahaREAT · order dated 16.10.2024 · bench: Justice Shriram R. Jagtap &amp; Shrikant M. Deshpande.<br>
+        <em>Held:</em> homebuyers have an <strong>unconditional right to claim s.18(1) interest</strong>; a MahaRERA order making interest conditional was set aside.<br>
+        <span class="src"><strong>[Order PDF — official MahaRERA site]</strong> <a href="https://maharera.maharashtra.gov.in/sites/default/files/order_list/53625_Judgement.pdf" target="_blank" rel="noopener">judgment PDF</a> · <a href="https://www.livelaw.in/consumer-cases/mahareat-homebuyers-have-unconditional-right-to-claim-interest-sets-aside-maharera-conditional-payment-of-interest-order-272517" target="_blank" rel="noopener">LiveLaw report</a></span><br>
+        <em>Say it as:</em> “The Appellate Tribunal’s judgment of 16th October 2024 — the order PDF is on MahaRERA’s own website.”
+      </td></tr>
+
+      <tr><td><span class="evtag">F9</span></td><td>
+        <strong>Neelkamal Realtors Suburban Pvt. Ltd. v. Union of India</strong><br>
+        Bombay High Court · Writ Petition No. 2737 of 2017 (with connected petitions) · decided 06.12.2017 · 2017 SCC OnLine Bom 9302 · bench: Naresh H. Patil &amp; R.G. Ketkar JJ.<br>
+        <em>Facts:</em> builders’ constitutional challenge to RERA, including Section 18.<br>
+        <em>Held:</em> RERA upheld; s.18 interest is <strong>compensatory, not penal</strong>; the promoter is bound by the possession date it itself declared and is deemed aware of its obligations when declaring it.<br>
+        <span class="src"><strong>[Full judgment]</strong> <a href="https://indiankanoon.org/doc/82600930/" target="_blank" rel="noopener">Indian Kanoon</a> · <a href="https://taxguru.in/wp-content/uploads/2017/12/Neelkamal-Realtors-Suburban-Pvt.-Ltd.-and-anr.-Vs.-Union-of-India-and-ors.-Bombay-High-Court.pdf" target="_blank" rel="noopener">judgment PDF</a></span><br>
+        <em>Say it as:</em> “Neelkamal Realtors versus Union of India, Bombay High Court, Writ Petition 2737 of 2017, decided 6th December 2017.”
+      </td></tr>
+    </table></div>
+    <div class="callout amber">
+      <p><strong>In a conciliation you rarely need more than two:</strong> lead with <strong>F3</strong> (the on-point OC-authority-dispute rulings) and <strong>F1</strong> (Newtech, SC). Keep the rest in reserve. If VTP’s representative disputes a press-reported holding, don’t argue — say: “We’ll place the report and the order on record with our filing; the Supreme Court authorities alone are sufficient for today.”</p>
+    </div>
+  </section>
+
+  <!-- ============ TAB 5: DEAL ============ -->
+  <section class="pane" id="pane-deal">
+    <h2>The three options + concession ladder</h2>
+    <ul class="gist">
+      <li>Round 1 = full ₹5.3L (interest + rent)</li>
+      <li>Rent (~₹1.85L) surrendered in round 2 only, in exchange for the full interest credit</li>
+      <li>Never two concessions for one</li>
+    </ul>
+
+    <div class="option">
+      <header><span class="tag tag-anchor">Option 1 · Open here</span><span class="opt-title">Full value, zero cheque</span><span class="opt-value num">≈ ₹5.3 L</span></header>
+      <div class="body"><ul>
+        <li>Waive final 5% installment + GST — <strong class="num">₹3,37,788</strong></li>
+        <li>Waive 12-mo maintenance advance + corpus — <strong class="num">≈ ₹1,04,000</strong></li>
+        <li>First-priority covered EV-ready parking selection</li>
+        <li>If OC not by 30 Sep 2026: ₹81,502/month credit until OC</li>
+      </ul></div>
+    </div>
+    <div class="option">
+      <header><span class="tag tag-target">Option 2 · Target</span><span class="opt-title">Interest as credit note + parking</span><span class="opt-value num">≈ ₹3.5–4 L</span></header>
+      <div class="body"><ul>
+        <li>Credit note <strong class="num">₹3,25,000</strong> against final installment (rent dropped here)</li>
+        <li>Parking per checklist, in consent terms + supplementary agreement</li>
+        <li>₹54,502/month credit if OC misses a fixed written date</li>
+      </ul>
+      <div class="verdict">They’ll counter ₹1.5–2L + vague date. <strong>Accept at ≥ ₹2.5L credit + documented parking + a real date.</strong></div></div>
+    </div>
+    <div class="option">
+      <header><span class="tag tag-floor">Option 3 · Floor</span><span class="opt-title">All-kind package</span><span class="opt-value num">≈ ₹2–2.5 L</span></header>
+      <div class="body"><ul>
+        <li>Parking per checklist + maintenance advance &amp; corpus waived (<span class="num">≈ ₹1,04,000</span>) + 2 further years’ maintenance borne by promoter + hard OC deadline with per-month penalty</li>
+      </ul>
+      <div class="verdict"><strong>Below this, walk</strong> — press the s.18 complaint. The evidence file wins that case.</div></div>
+    </div>
+
+    <div class="evaluator" id="evaluator">
+      <h3 style="margin-top:0">Offer evaluator — punch in what they put on the table</h3>
+      <label>Credit note / cash-equivalent (₹) <input type="number" id="evCredit" value="0" min="0" step="25000"> <span class="val">their central number</span></label>
+      <label><input type="checkbox" id="evParking"> Parking: covered, non-tandem, EV-ready, selection <em>in writing</em> <span class="val">+ ₹1,00,000</span></label>
+      <label><input type="checkbox" id="evMaint"> Maintenance advance + corpus waived <span class="val">+ ₹1,04,000</span></label>
+      <label><input type="checkbox" id="evMaint2"> 2 extra years’ society maintenance borne by promoter <span class="val">+ ₹60,000</span></label>
+      <label><input type="checkbox" id="evFuture"> Future-protection clause with a <strong>fixed date</strong> (₹/month after it) <span class="val">required</span></label>
+      <div id="evVerdict" class="walk">Enter their offer<span id="evGap"></span></div>
+    </div>
+
+    <h3>Parking checklist (slots unallotted as of 10 Jul — first pick is free for them to give)</h3>
+    <ul class="check">
+      <li>First-priority selection before general allotment; confirmed in writing within 15 days</li>
+      <li>Standard covered slot — <strong>not tandem, not mechanical</strong> (AFS clauses 18.9/35.8)</li>
+      <li>EV-charger installation right at your cost, separate metering, near an electrical panel</li>
+      <li>Recorded in: consent terms → allotment/possession letter → <strong>registered supplementary agreement</strong> (clause 19.18) → society earmarking list (clause 35.2)</li>
+    </ul>
+  </section>
+
+  <!-- ============ TAB 6: CONSENT TERMS ============ -->
+  <section class="pane" id="pane-terms">
+    <h2>Consent-terms generator — walk in with your draft, not theirs</h2>
+    <ul class="gist">
+      <li>Whoever’s draft is on the table controls the negotiation</li>
+      <li>Adjust the numbers as the deal moves, regenerate, read it out or paste into chat/email</li>
+      <li>Clause 6 is the armour: waiver limited to claims <em>up to the OC date</em>, everything else survives</li>
+    </ul>
+    <div class="termsgrid">
+      <label>Credit amount (₹)<input type="number" id="tCredit" value="325000" step="25000" min="0"></label>
+      <label>OC outer date<input type="text" id="tOcDate" value="30/09/2026"></label>
+      <label>Monthly credit after outer date (₹)<input type="number" id="tMonthly" value="54502" step="1000" min="0"></label>
+      <label>Parking level preference<input type="text" id="tLevel" value="podium / basement level of Complainants’ choice"></label>
+      <label>Credit note issued within (days)<input type="number" id="tCreditDays" value="7" min="1"></label>
+      <label>Slot confirmed in writing within (days)<input type="number" id="tSlotDays" value="15" min="1"></label>
+    </div>
+    <div class="termsbtns">
+      <button id="tGen">Regenerate draft</button>
+      <button id="tCopy" class="ghost">Copy to clipboard</button>
+      <button id="tDownload" class="ghost">Download .txt</button>
+    </div>
+    <textarea id="termsOut" spellcheck="false" aria-label="Draft consent terms text"></textarea>
+    <div class="callout amber">
+      <p><strong>Before signing anything generated here:</strong> read every line VTP’s lawyer adds or removes — especially the waiver clause — and if the amounts are final, have a RERA practitioner glance at it. This is a negotiation draft, not legal advice.</p>
+    </div>
+  </section>
+
+  <!-- ============ TAB 7: CLOSE ============ -->
+  <section class="pane" id="pane-close">
+    <h2>Closing lines</h2>
+    <div class="who">If terms are agreed</div>
+    <blockquote class="speak">“We’re grateful to the bench. We request the terms be recorded today with the specific figures, the parking selection right, and the OC date clause — and we’re happy to sign once we’ve read the final draft. If the draft will be prepared later, we request a short date for signing rather than leaving it open-ended.”</blockquote>
+    <div class="who">If VTP stonewalls</div>
+    <blockquote class="speak">“Sir, the promoter has admitted the rate in writing, its own reports show the tower wasn’t built by the deadline, and its own emails show the OC was filed in April 2026. If no reasonable settlement is possible today, we request the conciliation be closed as failed so our Section 18 complaint proceeds — where the claim, growing at ₹81,502 a month, will only be larger.”</blockquote>
+    <div class="who">If pressured to sign in the room</div>
+    <blockquote class="speak">“We’d like a week to review the drafted terms — we’re not walking away, we’re reading before signing. May we have a short date?”</blockquote>
+
+    <h2 style="margin-top:32px">Red lines — never sign</h2>
+    <div class="callout red">
+      <ul class="check nay">
+        <li>Waiver of “all claims, present and future” while T3 has no OC date — waiver only up to date of OC/possession</li>
+        <li>Any waiver before the credit amount and parking selection right are written into the terms</li>
+        <li>“Compensation as per agreement” without ₹/month and start date spelled out</li>
+        <li>Terms conditional on taking possession before the OC exists</li>
+        <li>A CREDAI-mediation detour (AFS clause 36) — statutory conciliation can’t be ousted by contract</li>
+      </ul>
+    </div>
+
+    <h2 style="margin-top:32px">Zoom checklist</h2>
+    <ul class="check">
+      <li>Join 2:20 PM · stable network · phone hotspot backup · Charu on the call</li>
+      <li>Rename: “Vishal Kumar — Complainant CC12603074”</li>
+      <li>This page open (Construction + Evidence tabs ready to share) + Desktop\VTP + case bundle</li>
+      <li>Mute during others’ cases; write down every factual claim VTP makes</li>
+      <li>Any proposal → make them restate it as: <strong>amount · form (credit/cheque) · dates · what you waive</strong></li>
+    </ul>
+
+    <p class="foot">War-room build 10 Jul 2026 (v7) for hearing 11 Jul 2026, 2:30 PM. Sources: registered AFS; MahaRERA filing CC12603074; VTP statement of account; 11 VTP CRM progress reports (May 2025–May 2026, filenames in Construction tab); 6 Gmail threads incl. the 19 Feb 2026 circular (Evidence tab); MahaRERA public registry; SBI official MCLR pages; press + case-law hyperlinks as tagged. Load-bearing dates double-source verified. Notes and checklist ticks save only in this browser. Negotiation preparation, not legal advice.</p>
+  </section>
+</div>
+
+<div id="glance" class="num" aria-label="Key numbers">
+  <span>Paid <b>₹61,12,351</b> (95%)</span>
+  <span>Deadline <b>31 Dec 2025</b></span>
+  <span>Rate <b>10.70%</b> = ₹54,502/mo</span>
+  <span>Claim <b id="glanceClaim">…</b> (+₹81,502/mo)</span>
+  <span>Accept ≥ <b>₹2.5 L</b> + date clause</span>
+  <span>Walk &lt; <b>₹2 L</b></span>
+</div>
+
+<button id="notesBtn" aria-expanded="false" aria-controls="notesPanel">✎ Notes</button>
+<div id="notesPanel" role="region" aria-label="Hearing notes">
+  <div class="nhead">
+    <button id="noteStamp" title="Insert current time">+ Time stamp</button>
+    <button id="noteDownload">Download .txt</button>
+    <button id="noteClear">Clear</button>
+    <span id="noteStatus">saved</span>
+  </div>
+  <textarea id="notesArea" placeholder="Live hearing notes — auto-saved in this browser.&#10;Tip: hit ‘+ Time stamp’ each time VTP makes a claim, then type it verbatim.&#10;Capture their statements in Rohit’s and Anuj’s matters too."></textarea>
+</div>
+
+<div id="tooltip" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  // ---- tabs
+  var tabs = document.querySelectorAll('nav.tabs button');
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabs.forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+      btn.setAttribute('aria-selected', 'true');
+      document.querySelectorAll('.pane').forEach(function (p) { p.classList.remove('active'); });
+      document.getElementById('pane-' + btn.dataset.pane).classList.add('active');
+    });
+  });
+
+  // ---- live claim
+  function inr(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+  var start = new Date(2026, 0, 1);
+  var now = new Date();
+  var months = (now - start) / (1000 * 60 * 60 * 24 * 30.44);
+  if (months < 0) months = 0;
+  var interest = 54502 * months;
+  var rentPaidMonths = Math.max(0, Math.ceil(months)); // rent paid monthly in advance
+  var rentMonths = Math.min(rentPaidMonths, 2) * 25000 + Math.max(0, rentPaidMonths - 2) * 27000;
+  document.getElementById('liveInterest').textContent = inr(interest);
+  document.getElementById('liveClaim').textContent = inr(interest + rentMonths);
+
+  // ---- chart data: points + tooltips + table
+  var pts = [
+    { x: 50,  y: 164, d: '30 Apr 2025', v: 'up to 11F (WIP)', f: 'CRM_05-05-2025.pdf' },
+    { x: 164, y: 140, d: '4 Jul 2025',  v: '13–14F (WIP)',    f: 'Progress report 05 July 2025.pdf' },
+    { x: 218, y: 135, d: '4 Aug 2025',  v: '14F (WIP)',       f: '05th August 2025.pdf' },
+    { x: 318, y: 102, d: '30 Sep 2025', v: '17–18F (WIP)',    f: 'CRM_06-10-2025 (3).pdf' },
+    { x: 371, y: 54,  d: '30 Oct 2025', v: '22–23F (WIP)',    f: 'CRM_05-11-2025 (2).pdf' },
+    { x: 425, y: 34,  d: '30 Nov 2025', v: '24–25F (WIP)',    f: 'CRM_05-12-2025.pdf' },
+    { x: 485, y: 25,  d: '3 Jan 2026',  v: '25–26F (WIP) — grace already expired', f: '06th Jan 2026.pdf' },
+    { x: 539, y: 20,  d: '3 Feb 2026',  v: '26F (still WIP)', f: 'CRM_05-02-2026.pdf' },
+    { x: 592, y: 20,  d: '5 Mar 2026',  v: '26F — COMPLETED', f: 'CRM_05-03-2026 (1) (1).pdf' },
+    { x: 636, y: 20,  d: '30 Mar 2026', v: 'complete (doors/paint still WIP)', f: 'CRM_05-04-2026.pdf' },
+    { x: 690, y: 20,  d: '30 Apr 2026', v: 'complete (doors/paint still WIP)', f: 'CRM_05-05-2026 Read-Only.pdf' }
+  ];
+  var svg = document.getElementById('floorchart');
+  var tip = document.getElementById('tooltip');
+  var ftable = document.getElementById('floortable');
+  var ns = 'http://www.w3.org/2000/svg';
+  pts.forEach(function (p) {
+    var dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y); dot.setAttribute('r', 4.5);
+    dot.setAttribute('fill', '#4a3aa7'); dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2');
+    var hit = document.createElementNS(ns, 'circle');
+    hit.setAttribute('cx', p.x); hit.setAttribute('cy', p.y); hit.setAttribute('r', 12);
+    hit.setAttribute('fill', 'transparent'); hit.style.cursor = 'pointer';
+    var t = document.createElementNS(ns, 'title');
+    t.textContent = p.d + ' — flooring ' + p.v;
+    hit.appendChild(t);
+    function show(e) {
+      tip.innerHTML = '<strong>' + p.d + '</strong><br>Flooring: ' + p.v + '<br><span style="opacity:.75">' + p.f + '</span>';
+      tip.style.display = 'block';
+      tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 280) + 'px';
+      tip.style.top = (e.clientY + 14) + 'px';
+    }
+    hit.addEventListener('mousemove', show);
+    hit.addEventListener('mouseleave', function () { tip.style.display = 'none'; });
+    svg.appendChild(dot); svg.appendChild(hit);
+    var row = document.createElement('tr');
+    row.innerHTML = '<td class="dt">' + p.d + '</td><td>' + p.v + '</td><td class="src">' + p.f + '</td>';
+    ftable.appendChild(row);
+  });
+
+  // ---- matrix
+  var cols = [
+    { l: 'Apr 25', t: 'as on 30.04.2025 — VTP SIERRA - Progress Report for CRM_05-05-2025.pdf' },
+    { l: 'Jul 25', t: 'as on 04.07.2025 — VTP SIERRA- Progress report 05 July 2025.pdf', dl: true, dlt: '30 Jun 2025 contractual date passed →' },
+    { l: 'Aug 25', t: 'as on 04.08.2025 — Construction progress report - 05th August 2025.pdf' },
+    { l: 'Sep 25', t: 'as on 30.09.2025 — VTP SIERRA - Progress Report for CRM_06-10-2025 (3).pdf' },
+    { l: 'Oct 25', t: 'as on 30.10.2025 — VTP SIERRA - Progress Report for CRM_05-11-2025 (2).pdf' },
+    { l: 'Nov 25', t: 'as on 30.11.2025 — VTP SIERRA - Progress Report for CRM_05-12-2025.pdf' },
+    { l: 'Jan 26', t: 'as on 03.01.2026 — Construction progress report - 06th Jan 2026.pdf', dl: true, dlt: '31 Dec 2025 grace deadline passed →' },
+    { l: 'Feb 26', t: 'as on 03.02.2026 — VTP SIERRA - Progress Report for CRM_05-02-2026.pdf' },
+    { l: 'Mar 26', t: 'as on 05.03.2026 — VTP SIERRA - Progress Report for CRM_05-03-2026 (1) (1).pdf' },
+    { l: 'Mar 26⁺', t: 'as on 30.03.2026 — VTP SIERRA - Progress Report for CRM_05-04-2026.pdf' },
+    { l: 'Apr 26', t: 'as on 30.04.2026 — VTP SIERRA - Progress Report for CRM_05-05-2026 - Read-Only.pdf' }
+  ];
+  // – = not started/reported, W = WIP, C = complete
+  var rows = [
+    ['RCC / above-terrace',        'W','C','C','C','C','C','C','C','C','C','C'],
+    ['Gypsum',                     'W','W','W','C','C','C','C','C','C','C','C'],
+    ['Waterproofing & plumbing',   'W','W','W','C','C','C','C','C','C','C','C'],
+    ['Firefighting',               'W','W','W','C','C','C','C','C','C','C','C'],
+    ['Tiling (toilet dado)',       'W','W','W','W','W','W','W','W','C','C','C'],
+    ['Flooring',                   'W','W','W','W','W','W','W','W','C','C','C'],
+    ['Aluminium windows/shutters', '-','-','-','W','W','W','W','W','W','W','W'],
+    ['Wooden doors',               '-','-','-','-','-','-','W','W','W','W','W'],
+    ['Internal painting',          '-','-','-','-','-','-','W','W','W','W','W'],
+    ['External painting',          '-','-','-','W','W','W','W','W','W','W','W'],
+    ['Lifts',                      '-','-','-','-','-','W','W','W','C','C','C'],
+    ['Clubhouse / amenities',      'W','W','W','W','W','W','W','W','W','W','W']
+  ];
+  var mt = document.getElementById('matrixtable');
+  var thead = '<tr><th class="rowh">Trade (Tower 3)</th>';
+  cols.forEach(function (c) {
+    thead += '<th' + (c.dl ? ' class="dl"' : '') + ' title="' + c.t + (c.dlt ? ' · ' + c.dlt : '') + '">' + c.l + '</th>';
+  });
+  thead += '</tr>';
+  var body = '';
+  rows.forEach(function (r) {
+    body += '<tr><td class="rowh">' + r[0] + '</td>';
+    for (var i = 1; i < r.length; i++) {
+      var s = r[i];
+      var cls = s === 'C' ? 'c' : (s === 'W' ? 'w' : 'ns');
+      if (cols[i - 1].dl) cls += ' dl';
+      var sym = s === 'C' ? '✓' : (s === 'W' ? 'W' : '–');
+      var label = s === 'C' ? 'completed' : (s === 'W' ? 'work in progress' : 'not started/not reported');
+      body += '<td class="' + cls + '" title="' + r[0] + ' — ' + cols[i - 1].l + ': ' + label + '">' + sym + '</td>';
+    }
+    body += '</tr>';
+  });
+  mt.innerHTML = thead + body;
+
+  // ---- offer evaluator
+  var ids = ['evCredit', 'evParking', 'evMaint', 'evMaint2', 'evFuture'];
+  function evaluate() {
+    var credit = Number(document.getElementById('evCredit').value) || 0;
+    var total = credit
+      + (document.getElementById('evParking').checked ? 100000 : 0)
+      + (document.getElementById('evMaint').checked ? 104000 : 0)
+      + (document.getElementById('evMaint2').checked ? 60000 : 0);
+    var future = document.getElementById('evFuture').checked;
+    var v = document.getElementById('evVerdict');
+    var gap = document.getElementById('evGap');
+    var claim = interest + rentMonths;
+    var msg, cls;
+    if (total >= 350000 && future) { cls = 'accept'; msg = 'ACCEPT — at or above target.'; }
+    else if (total >= 250000 && future) { cls = 'accept'; msg = 'ACCEPTABLE — at threshold. Push once more, then take it.'; }
+    else if (!future && total >= 250000) { cls = 'push'; msg = 'PUSH — money is close but NO date-protection clause. T3 has no OC date; do not settle the future for free.'; }
+    else if (total >= 150000) { cls = 'push'; msg = 'PUSH HARDER — below the ₹2.5L threshold.'; }
+    else { cls = 'walk'; msg = 'WALK — below floor. Ask the bench to record conciliation as failed.'; }
+    v.className = cls;
+    v.childNodes[0].textContent = msg;
+    gap.textContent = 'Package value ' + inr(total) + ' vs claim ' + inr(claim) + ' (' + Math.round(100 * total / claim) + '%).';
+    v.appendChild(gap);
+  }
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', evaluate);
+    el.addEventListener('change', evaluate);
+  });
+  evaluate();
+
+  // ---- glance strip
+  document.getElementById('glanceClaim').textContent = inr(interest + rentMonths);
+
+  // ---- persistent checklists (click to tick; saved in this browser)
+  var CHK_KEY = 'warroom-checks';
+  var checks = {};
+  try { checks = JSON.parse(localStorage.getItem(CHK_KEY)) || {}; } catch (e) {}
+  document.querySelectorAll('ul.check:not(.nay)').forEach(function (ul, ui) {
+    ul.querySelectorAll('li').forEach(function (li, i) {
+      var key = ui + '|' + i + '|' + li.textContent.trim().slice(0, 30);
+      if (checks[key]) li.classList.add('done');
+      li.setAttribute('role', 'checkbox');
+      li.setAttribute('aria-checked', checks[key] ? 'true' : 'false');
+      li.tabIndex = 0;
+      function toggle(e) {
+        if (e.target && e.target.tagName === 'A') return;
+        var on = li.classList.toggle('done');
+        li.setAttribute('aria-checked', on ? 'true' : 'false');
+        checks[key] = on;
+        try { localStorage.setItem(CHK_KEY, JSON.stringify(checks)); } catch (err) {}
+      }
+      li.addEventListener('click', toggle);
+      li.addEventListener('keydown', function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(e); } });
+    });
+  });
+
+  // ---- notes drawer (auto-saved)
+  var NOTE_KEY = 'warroom-notes';
+  var notesBtn = document.getElementById('notesBtn');
+  var notesPanel = document.getElementById('notesPanel');
+  var notesArea = document.getElementById('notesArea');
+  var noteStatus = document.getElementById('noteStatus');
+  try { notesArea.value = localStorage.getItem(NOTE_KEY) || ''; } catch (e) {}
+  notesBtn.addEventListener('click', function () {
+    var open = notesPanel.classList.toggle('open');
+    notesBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) notesArea.focus();
+  });
+  var saveTimer;
+  notesArea.addEventListener('input', function () {
+    noteStatus.textContent = 'typing…';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      try { localStorage.setItem(NOTE_KEY, notesArea.value); noteStatus.textContent = 'saved'; }
+      catch (e) { noteStatus.textContent = 'not saved!'; }
+    }, 400);
+  });
+  document.getElementById('noteStamp').addEventListener('click', function () {
+    var t = new Date();
+    var hh = String(t.getHours()).padStart(2, '0'), mm = String(t.getMinutes()).padStart(2, '0');
+    var pos = notesArea.selectionStart;
+    var stamp = (notesArea.value && !notesArea.value.endsWith('\n') ? '\n' : '') + '[' + hh + ':' + mm + '] ';
+    notesArea.value = notesArea.value.slice(0, pos) + stamp + notesArea.value.slice(pos);
+    notesArea.focus();
+    notesArea.selectionStart = notesArea.selectionEnd = pos + stamp.length;
+    notesArea.dispatchEvent(new Event('input'));
+  });
+  function downloadText(name, text) {
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  }
+  document.getElementById('noteDownload').addEventListener('click', function () {
+    downloadText('hearing-notes-CC12603074.txt', notesArea.value);
+  });
+  document.getElementById('noteClear').addEventListener('click', function () {
+    if (confirm('Clear all notes? (Download first if you need them.)')) {
+      notesArea.value = '';
+      try { localStorage.setItem(NOTE_KEY, ''); } catch (e) {}
+    }
+  });
+
+  // ---- consent-terms generator
+  function tval(id) { return document.getElementById(id).value; }
+  function inrTxt(n) { return 'Rs. ' + Math.round(Number(n) || 0).toLocaleString('en-IN') + '/-'; }
+  function genTerms() {
+    var today = new Date().toLocaleDateString('en-GB');
+    var txt = [
+      'DRAFT CONSENT TERMS (for discussion)',
+      'BEFORE THE MAHARERA CONCILIATION FORUM - PUNE BENCH 6',
+      'Complaint No. CC12603074',
+      'Vishal Kumar & Charu Piriya (Complainants) v. Prasanna Developers (Respondent/Promoter)',
+      'Flat No. 2502, Tower 3, VTP Sierra Phase 2 - MahaRERA Regn. No. P52100029394',
+      '',
+      '1. BACKGROUND',
+      '1.1 The Complainants are allottees of Flat No. T3-2502 under the registered Agreement for Sale, with possession due on or before 30/06/2025 subject to a grace period of 6 months (i.e., 31/12/2025), per Clause 12.1 thereof.',
+      '1.2 The Complainants have paid ' + inrTxt(6112351) + ' of the total consideration of ' + inrTxt(6434054) + ' and are not in default of any payment obligation.',
+      '1.3 The parties have arrived at an amicable settlement in the present conciliation proceedings on the following terms.',
+      '',
+      '2. CREDIT AGAINST FINAL INSTALLMENT',
+      '2.1 The Respondent shall extend a credit of ' + inrTxt(tval('tCredit')) + ' to the Complainants towards compensation for the delay in possession, to be adjusted against the final possession installment and the charges payable at the time of possession under the Agreement for Sale.',
+      '2.2 A credit note reflecting the above shall be issued within ' + tval('tCreditDays') + ' days of these terms being taken on record, and shall be reflected in the Complainants’ statement of account. Any balance credit remaining after adjustment shall be paid to the Complainants at possession.',
+      '',
+      '3. CAR PARKING',
+      '3.1 Prior to commencement of general earmarking/allotment of car parking spaces in the project, the Respondent shall permit the Complainants first-priority selection of one (1) covered, non-tandem, non-mechanized car parking space on the ' + tval('tLevel') + '.',
+      '3.2 The Complainants shall be entitled to install an electric-vehicle charging point at the selected space at their own cost, with separate metering, subject to applicable safety norms.',
+      '3.3 The selected slot number and level shall be confirmed by the Respondent in writing within ' + tval('tSlotDays') + ' days; recorded in the allotment/possession letter; incorporated in the registered supplementary agreement to be executed at possession (per Clause 19.18 of the Agreement for Sale); and included in the parking earmarking list to be handed over to the society (per Clause 35.2).',
+      '',
+      '4. OCCUPANCY CERTIFICATE AND FURTHER DELAY',
+      '4.1 The Respondent states that the Occupancy Certificate (OC) application for Tower 3 is pending with Pune Municipal Corporation.',
+      '4.2 If the OC for Tower 3 is not received on or before ' + tval('tOcDate') + ', the Respondent shall credit to the Complainants a further ' + inrTxt(tval('tMonthly')) + ' per month (pro-rata for part of a month) for each month thereafter until receipt of the OC, adjustable/payable in the manner set out in Clause 2.',
+      '',
+      '5. POSSESSION',
+      '5.1 The Respondent shall offer possession of the said Flat, complete in all respects, within 15 days of receipt of the OC for Tower 3.',
+      '',
+      '6. LIMITED WAIVER AND WITHDRAWAL',
+      '6.1 Upon full compliance with Clauses 2 to 5, the Complainants shall treat their claims for delay interest/compensation and alternate-accommodation rent UP TO THE DATE OF RECEIPT OF THE OC as fully settled, and shall withdraw Complaint No. CC12603074.',
+      '6.2 Nothing herein waives or affects: (a) the Complainants’ rights under Clause 4.2 for any period after ' + tval('tOcDate') + '; (b) defect liability under Section 14(3) of the RERA; (c) the Respondent’s obligations regarding conveyance, society formation, common areas and amenities; and (d) the parking entitlement under Clause 3.',
+      '6.3 These terms are entered into without admission of liability by either party.',
+      '',
+      '7. RECORDING',
+      '7.1 The parties jointly request the Hon’ble Forum to take these consent terms on record and dispose of the Complaint in terms thereof.',
+      '7.2 Signed by both Complainants and by a duly authorized signatory of the Respondent.',
+      '',
+      'Place: Pune',
+      'Date: ' + today,
+      '',
+      '[Draft prepared by the Complainants for discussion - subject to final legal review.]'
+    ].join('\n');
+    document.getElementById('termsOut').value = txt;
+  }
+  document.getElementById('tGen').addEventListener('click', genTerms);
+  ['tCredit', 'tOcDate', 'tMonthly', 'tLevel', 'tCreditDays', 'tSlotDays'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', genTerms);
+  });
+  document.getElementById('tCopy').addEventListener('click', function () {
+    var out = document.getElementById('termsOut');
+    out.select();
+    var done = false;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(out.value).then(function () {});
+      done = true;
+    }
+    if (!done) { try { document.execCommand('copy'); } catch (e) {} }
+    var btn = document.getElementById('tCopy');
+    var old = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(function () { btn.textContent = old; }, 1500);
+  });
+  document.getElementById('tDownload').addEventListener('click', function () {
+    downloadText('draft-consent-terms-CC12603074.txt', document.getElementById('termsOut').value);
+  });
+  genTerms();
+})();
+</script>
